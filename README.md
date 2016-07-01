@@ -9,7 +9,7 @@ I hope some day I will find the sources of Breed (Or at least the UI-part) withi
 to prevent such a silly and dumb method for i18n like this.
 
 ### crxmake.sh
-https://github.com/darkfe/crxmake
+https://github.com/darkfe/crxmake  
 https://developer.chrome.com/extensions/crx
 
 ### Installation
