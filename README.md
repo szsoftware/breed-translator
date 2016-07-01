@@ -10,3 +10,8 @@ to prevent such a silly and dumb method for i18n like this.
 
 ### crxmake.sh
 https://github.com/darkfe/crxmake
+https://developer.chrome.com/extensions/crx
+
+### Installation
+Extension for Google Chrome/Chromium Webbrowser is available over the Google Webstore:  
+https://chrome.google.com/webstore/detail/translator-for-the-breed/hmkkdkhgadgmaplnhahncddmmcdegjhi
