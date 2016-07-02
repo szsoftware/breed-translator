@@ -1,0 +1,265 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Breed Web 恢复控制台</title>
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+	<div id="container">
+		<div id="breed_console">
+			Breed Web 恢复控制台
+		</div>
+		<div id="nav">
+			<ul id="navbar"></ul>
+		</div>
+		<div id="page">
+			<form action="http:/home/sven/Dropbox/Development/GoogleChrome/Extensions/breed-translator/tools/192.168.1.1//192.168.1.1/upload.html" method="post" enctype="multipart/form-data" onsubmit="return file_check()">
+    <div id="fw_type">
+        <ul>
+            <li><a id="fw_type_generic" class="fw_type_clicked">常规固件</a></li>
+            <li><a id="fw_type_fullflash" class="fw_type_unclicked">编程器固件</a></li>
+        </ul>
+    <div class="clearfloat"> </div>
+    </div>
+    <div id="fw_files">
+        <div id="fw_files_generic">
+            <table class="system_info">
+                <tr>
+                    <td class="th">
+                        <input type="checkbox" name="boot_check" id="boot_check" value="1" onclick="check_checkbox('boot_file', this)" />
+                        <label for="boot_check">Bootloader</label>
+                    </td>
+                    <td>
+                        <input type="file" name="boot_file" id="boot_file" class="fw_upload" onchange="hit_checkbox('boot_check', this)" />
+                    </td>
+                </tr>
+                <tr class="g">
+                    <td class="th">
+                        <input type="checkbox" name="fw_check" id="fw_check" value="1" onclick="check_checkbox('fw_file', this); hit_autoreboot(this.checked)" />
+                        <label for="fw_check">固件</label>
+                    </td>
+                    <td>
+                        <input type="file" name="fw_file" id="fw_file" class="fw_upload" onchange="hit_checkbox('fw_check', this); hit_autoreboot(this.value != '')" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="th">
+                        <input type="checkbox" name="eeprom_check" id="eeprom_check" value="1" onclick="check_checkbox('eeprom_file', this)" />
+                        <label for="eeprom_check">EEPROM</label>
+                    </td>
+                    <td>
+                        <input type="file" name="eeprom_file" id="eeprom_file" class="fw_upload" onchange="hit_checkbox('eeprom_check', this)" />
+                    </td>
+                </tr>
+                <tr class="g ed">
+                    <td class="th">
+                        <label>闪存布局</label>
+                    </td>
+                    <td>
+                        <select name="flash_layout" id="flash_layout">
+                            <option value="big">0x60000</option>
+                            <option value="reference" selected="selected">公版 (0x50000)</option>
+                            <option value="compact">精简 (0x40000)</option>
+                        </select>
+                    </td>
+                </tr>
+            </table>
+            <input type="hidden" name="fw_type" value="generic" />
+        </div>
+        <div id="fw_files_fullflash">
+            <table class="system_info">
+                <tr class="ed">
+                    <td class="th">
+                        <input type="checkbox" name="fullflash_check" id="fullflash_check" value="1" onclick="check_checkbox('fullflash_file', this); hit_autoreboot(this.checked)" />
+                        <label for="fullflash_check">编程器固件</label>
+                    </td>
+                    <td>
+                        <input type="file" name="fullflash_file" id="fullflash_file" class="fw_upload" onchange="hit_checkbox('fullflash_check', this); hit_autoreboot(this.value != '')" />
+                    </td>
+                </tr>
+            </table>
+            <input type="hidden" name="fw_type" value="fullflash" />
+        </div>
+    </div>
+    <div id="fw_options">
+        <div id="fw_autoreboot">
+            <input type="checkbox" name="autoreboot" id="autoreboot" value="1" />
+            <label for="autoreboot">自动重启</label>
+        </div>
+        <div id="fw_skipboot">
+            <input type="checkbox" name="skipboot" id="skipboot" value="1" checked="checked" />
+            <label for="skipboot">保留现有 Bootloader</label>
+        </div>
+        <div id="fw_skipeeprom">
+            <input type="checkbox" name="skipeeprom" id="skipeeprom" value="1" checked="checked" />
+            <label for="skipeeprom">保留现有 EEPROM</label>
+        </div>
+    </div>
+    <div class="operate">
+        <button type="submit">上传</button>
+        <input type="hidden" name="submit" value="Upload" />
+    </div>
+</form>
+<script type="text/javascript">
+    var fw_type_fullflash = document.getElementById("fw_type_fullflash");
+    var fw_type_generic = document.getElementById("fw_type_generic");
+
+    var fw_files = document.getElementById("fw_files");
+    var fw_files_generic = document.getElementById("fw_files_generic");
+    var fw_files_fullflash = document.getElementById("fw_files_fullflash");
+
+    var fw_options = document.getElementById("fw_options");
+    var fw_skipboot = document.getElementById("fw_skipboot");
+    var fw_skipeeprom = document.getElementById("fw_skipeeprom");
+
+    fw_files.removeChild(fw_files_fullflash);
+    document.body.appendChild(fw_files_fullflash);
+
+    fw_options.removeChild(fw_skipboot);
+    document.body.appendChild(fw_skipboot);
+
+    fw_options.removeChild(fw_skipeeprom);
+    document.body.appendChild(fw_skipeeprom);
+
+    fw_type_generic.onclick = function () {
+        if (fw_type_generic.className == "fw_type_clicked")
+            return;
+
+        fw_type_fullflash.className = "fw_type_unclicked";
+        fw_type_generic.className = "fw_type_clicked";
+
+        switch_to_generic();
+    }
+
+    fw_type_fullflash.onclick = function () {
+        if (fw_type_fullflash.className == "fw_type_clicked")
+            return;
+
+        fw_type_generic.className = "fw_type_unclicked";
+        fw_type_fullflash.className = "fw_type_clicked";
+
+        switch_to_fullflash();
+    }
+
+    function switch_to_generic () {
+        fw_files_fullflash.style.display = "none";
+        fw_files.removeChild(fw_files_fullflash);
+        document.body.appendChild(fw_files_fullflash);
+
+        fw_skipboot.style.display = "none";
+        fw_options.removeChild(fw_skipboot);
+        document.body.appendChild(fw_skipboot);
+
+        fw_skipeeprom.style.display = "none";
+        fw_options.removeChild(fw_skipeeprom);
+        document.body.appendChild(fw_skipeeprom);
+
+        document.body.removeChild(fw_files_generic);
+        fw_files_generic.style.display = "block";
+        fw_files.appendChild(fw_files_generic);
+    }
+
+    function switch_to_fullflash () {
+        document.body.removeChild(fw_files_fullflash);
+        fw_files_fullflash.style.display = "block";
+        fw_files.appendChild(fw_files_fullflash);
+
+        document.body.removeChild(fw_skipboot);	
+        fw_skipboot.style.display = "block";
+        fw_options.appendChild(fw_skipboot);
+
+        document.body.removeChild(fw_skipeeprom);
+        fw_skipeeprom.style.display = "block";
+        fw_options.appendChild(fw_skipeeprom);
+
+        fw_files.removeChild(fw_files_generic);
+        fw_files_generic.style.display = "none";
+        document.body.appendChild(fw_files_generic);
+    }
+
+    function hit_checkbox(id, filebin) {
+        if (filebin != undefined)
+        document.getElementById(id).checked = (filebin.value != "");
+    }
+
+    function hit_autoreboot(checked) {
+        document.getElementById("autoreboot").checked = checked;
+    }
+
+    function check_checkbox(id, checkbox) {
+        if (!checkbox.checked)
+        document.getElementById(id).value = "";
+    }
+
+    function file_check() {
+        var boot_check = document.getElementById("boot_check");
+        var fw_check = document.getElementById("fw_check");
+        var eeprom_check = document.getElementById("eeprom_check");
+        var fullflash_check = document.getElementById("fullflash_check");
+
+        var boot = document.getElementById("boot_file");
+        var fw = document.getElementById("fw_file");
+        var eeprom = document.getElementById("eeprom_file");
+        var fullflash = document.getElementById("fullflash_file");
+
+        var has_upload_file = false;
+
+        if (fw_type_generic.className == "fw_type_clicked") {
+            fullflash_check.checked = false;
+            fullflash.value = "";
+
+            if (boot_check.checked && boot.value != "") has_upload_file = true;
+            if (fw_check.checked && fw.value != "") has_upload_file = true;
+            if (eeprom_check.checked && eeprom.value != "") has_upload_file = true;
+        } else {
+            boot_check.checked = false;
+            boot.value = "";
+            fw_check.checked = false;
+            fw.value = "";
+            eeprom_check.checked = false;
+            eeprom.value = "";
+
+            if (fullflash_check.checked && fullflash.value != "") has_upload_file = true;
+        }
+
+        if (!has_upload_file) {
+            alert("请选择至少一个文件");
+            return false;
+        }
+
+        return true;
+    }
+</script>
+		</div>
+		<div class="clearfloat"> </div>
+	</div>
+	<script type="text/javascript">
+		var nav_str = "/home/sven/Dropbox/Development/GoogleChrome/Extensions/breed-translator/tools/192.168.1.1/index.html|系统信息,/home/sven/Dropbox/Development/GoogleChrome/Extensions/breed-translator/tools/192.168.1.1/upgrade.html|固件更新,/home/sven/Dropbox/Development/GoogleChrome/Extensions/breed-translator/tools/192.168.1.1/backup.html|固件备份,/home/sven/Dropbox/Development/GoogleChrome/Extensions/breed-translator/tools/192.168.1.1/clock.html|频率设置,/home/sven/Dropbox/Development/GoogleChrome/Extensions/breed-translator/tools/192.168.1.1/reset.html|恢复出厂设置,/home/sven/Dropbox/Development/GoogleChrome/Extensions/breed-translator/tools/192.168.1.1/bootcfg.html|固件启动设置,/home/sven/Dropbox/Development/GoogleChrome/Extensions/breed-translator/tools/192.168.1.1/mac.html|MAC 地址修改,/home/sven/Dropbox/Development/GoogleChrome/Extensions/breed-translator/tools/192.168.1.1/reboot.html|重启,/home/sven/Dropbox/Development/GoogleChrome/Extensions/breed-translator/tools/192.168.1.1/about.html|关于";
+		var nav_page = "/home/sven/Dropbox/Development/GoogleChrome/Extensions/breed-translator/tools/192.168.1.1/upgrade.html";
+		var nav_list = nav_str.split(",");
+		var navbar = document.getElementById("navbar");
+
+		for (var i = 0; i < nav_list.length; i++) {
+			if (!nav_list[i].indexOf("|"))
+				continue;
+
+			var nav_val = nav_list[i].split("|");
+
+			var li = document.createElement("li");
+			if (nav_page == nav_val[0]) {
+				li.className = "current_nav";
+				li.appendChild(document.createTextNode(nav_val[1]));
+			} else {
+				var a = document.createElement("a");
+				a.appendChild(document.createTextNode(nav_val[1]));
+				a.setAttribute("href", nav_val[0]);
+				li.appendChild(a);
+			}
+
+			navbar.appendChild(li);
+		}
+	</script>
+</body>
+</html>

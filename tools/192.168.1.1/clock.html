@@ -1,0 +1,113 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Breed Web 恢复控制台</title>
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+	<div id="container">
+		<div id="breed_console">
+			Breed Web 恢复控制台
+		</div>
+		<div id="nav">
+			<ul id="navbar"></ul>
+		</div>
+		<div id="page">
+			<div class="operate_success" id="operate_success">
+    超频设置已保存。重启后生效
+</div>
+<div id="freq_notice">
+    提示：如果超频后无法开机，请按住复位键再通电，系统将以默认频率启动。
+</div>
+<form action="clock.html" method="post" enctype="application/x-www-form-urlencoded">
+    <table class="system_info">
+        <tr>
+            <td class="th">
+                频率设置
+            </td>
+            <td>
+                40MHz * 
+                <select name="multi" id="multi" onchange="calc_freq()">
+                    <option value="0">24</option>
+                    <option value="1">25</option>
+                    <option value="2">26</option>
+                    <option value="3">27</option>
+                    <option value="4">28</option>
+                    <option value="5">29</option>
+                    <option value="6">30</option>
+                    <option value="7">31</option>
+                </select>
+                / 
+                <select name="div" id="div" onchange="calc_freq()">
+                    <option value="0">2</option>
+                    <option value="1">3</option>
+                    <option value="2">4</option>
+                    <option value="3">8</option>
+                </select>
+                = <label id="sw_freq"></label>
+            </td>
+        </tr>
+    </table>
+    <div class="operate">
+        <button type="submit">修改</button>
+        <input type="hidden" name="submit" value="Change" />
+    </div>
+</form>
+<script type="text/javascript">
+    var multi = "5";
+    var div = "0";
+    var success = "";
+
+    document.getElementById("multi").value = multi;
+
+    document.getElementById("div").value = div;
+
+    function calc_freq() {
+        var div_table = [2, 3, 4, 8];
+        var multi_new = 24 + parseInt(document.getElementById("multi").value, 10);
+        var div_new = div_table[document.getElementById("div").value];
+
+        var freq = parseInt(40 * multi_new / div_new, 10);
+
+        document.getElementById("sw_freq").innerHTML = freq + "MHz";
+    }
+
+    calc_freq();
+
+    if (success == "1") {
+        document.getElementById("operate_success").style.display = "block";
+    }
+</script>
+		</div>
+		<div class="clearfloat"> </div>
+	</div>
+	<script type="text/javascript">
+		var nav_str = "/home/sven/Dropbox/Development/GoogleChrome/Extensions/breed-translator/tools/192.168.1.1/index.html|系统信息,/home/sven/Dropbox/Development/GoogleChrome/Extensions/breed-translator/tools/192.168.1.1/upgrade.html|固件更新,/home/sven/Dropbox/Development/GoogleChrome/Extensions/breed-translator/tools/192.168.1.1/backup.html|固件备份,/home/sven/Dropbox/Development/GoogleChrome/Extensions/breed-translator/tools/192.168.1.1/clock.html|频率设置,/home/sven/Dropbox/Development/GoogleChrome/Extensions/breed-translator/tools/192.168.1.1/reset.html|恢复出厂设置,/home/sven/Dropbox/Development/GoogleChrome/Extensions/breed-translator/tools/192.168.1.1/bootcfg.html|固件启动设置,/home/sven/Dropbox/Development/GoogleChrome/Extensions/breed-translator/tools/192.168.1.1/mac.html|MAC 地址修改,/home/sven/Dropbox/Development/GoogleChrome/Extensions/breed-translator/tools/192.168.1.1/reboot.html|重启,/home/sven/Dropbox/Development/GoogleChrome/Extensions/breed-translator/tools/192.168.1.1/about.html|关于";
+		var nav_page = "/home/sven/Dropbox/Development/GoogleChrome/Extensions/breed-translator/tools/192.168.1.1/clock.html";
+		var nav_list = nav_str.split(",");
+		var navbar = document.getElementById("navbar");
+
+		for (var i = 0; i < nav_list.length; i++) {
+			if (!nav_list[i].indexOf("|"))
+				continue;
+
+			var nav_val = nav_list[i].split("|");
+
+			var li = document.createElement("li");
+			if (nav_page == nav_val[0]) {
+				li.className = "current_nav";
+				li.appendChild(document.createTextNode(nav_val[1]));
+			} else {
+				var a = document.createElement("a");
+				a.appendChild(document.createTextNode(nav_val[1]));
+				a.setAttribute("href", nav_val[0]);
+				li.appendChild(a);
+			}
+
+			navbar.appendChild(li);
+		}
+	</script>
+</body>
+</html>

@@ -1,0 +1,78 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Breed Web 恢复控制台</title>
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+	<div id="container">
+		<div id="breed_console">
+			Breed Web 恢复控制台
+		</div>
+		<div id="nav">
+			<ul id="navbar"></ul>
+		</div>
+		<div id="page">
+			<table class="system_info">
+	<tr>
+		<td class="th">CPU</td>
+		<td>MediaTek MT7620A ver 2, eco 6</td>
+	</tr>
+	<tr class="g">
+		<td class="th">内存</td>
+		<td>128MB DDR2</td>
+	</tr>
+	<tr>
+		<td class="th">Flash</td>
+		<td>Winbond W25Q128 @ 24MHz (16MB)</td>
+	</tr>
+	<tr class="g">
+		<td class="th">以太网</td>
+		<td>MediaTek MT7620A built-in 5-port 10/100M switch</td>
+	</tr>
+	<tr>
+		<td class="th">时钟频率</td>
+		<td>CPU: 580MHz, Bus: 193MHz</td>
+	</tr>
+	<tr class="g">
+		<td class="th">编译日期</td>
+		<td>2016-04-19 [git-3b445d3]</td>
+	</tr>
+	<tr class="ed">
+		<td class="th">版本</td>
+		<td>1.0 (r849)</td>
+	</tr>
+</table>
+		</div>
+		<div class="clearfloat"> </div>
+	</div>
+	<script type="text/javascript">
+		var nav_str = "/home/sven/Dropbox/Development/GoogleChrome/Extensions/breed-translator/tools/192.168.1.1/index.html|系统信息,/home/sven/Dropbox/Development/GoogleChrome/Extensions/breed-translator/tools/192.168.1.1/upgrade.html|固件更新,/home/sven/Dropbox/Development/GoogleChrome/Extensions/breed-translator/tools/192.168.1.1/backup.html|固件备份,/home/sven/Dropbox/Development/GoogleChrome/Extensions/breed-translator/tools/192.168.1.1/clock.html|频率设置,/home/sven/Dropbox/Development/GoogleChrome/Extensions/breed-translator/tools/192.168.1.1/reset.html|恢复出厂设置,/home/sven/Dropbox/Development/GoogleChrome/Extensions/breed-translator/tools/192.168.1.1/bootcfg.html|固件启动设置,/home/sven/Dropbox/Development/GoogleChrome/Extensions/breed-translator/tools/192.168.1.1/mac.html|MAC 地址修改,/home/sven/Dropbox/Development/GoogleChrome/Extensions/breed-translator/tools/192.168.1.1/reboot.html|重启,/home/sven/Dropbox/Development/GoogleChrome/Extensions/breed-translator/tools/192.168.1.1/about.html|关于";
+		var nav_page = "/home/sven/Dropbox/Development/GoogleChrome/Extensions/breed-translator/tools/192.168.1.1/index.html";
+		var nav_list = nav_str.split(",");
+		var navbar = document.getElementById("navbar");
+
+		for (var i = 0; i < nav_list.length; i++) {
+			if (!nav_list[i].indexOf("|"))
+				continue;
+
+			var nav_val = nav_list[i].split("|");
+
+			var li = document.createElement("li");
+			if (nav_page == nav_val[0]) {
+				li.className = "current_nav";
+				li.appendChild(document.createTextNode(nav_val[1]));
+			} else {
+				var a = document.createElement("a");
+				a.appendChild(document.createTextNode(nav_val[1]));
+				a.setAttribute("href", nav_val[0]);
+				li.appendChild(a);
+			}
+
+			navbar.appendChild(li);
+		}
+	</script>
+</body>
+</html>
