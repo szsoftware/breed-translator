@@ -91,5 +91,6 @@ if(div_about)
 {
 var my_about		= document.createElement("div");
 my_about.innerHTML	= "<p>Breed Translator Extension for Chrome by szsoftware:</br><a href='https://github.com/szsoftware/breed-translator'>https://github.com/szsoftware/breed-translator</a></p>";
+my_about.innerHTML	+= "<p>Part of the Breed (e.g. WebGUI) is based on old version of <a href='https://github.com/pepe2k/u-boot_mod'>https://github.com/pepe2k/u-boot_mod</a> but sadly the auther does not follow GPL-v2 Licence and release the source code.</p>";
 div_about.appendChild(my_about);
 }
