@@ -1,5 +1,15 @@
-
 var dictionary = {
+	"本产品仅供个人免费使用，禁止用于商业目的": "Free for personal use. Commercial use prohibited.",
+	"启用环境变量可以使 Breed 的一些设置能够被修改并保存": "Enable environment varilables can allow Breed to edit/save some specific settings",
+	"请根据当前使用的固件类型，选择合适的位置": "Please pick the correct location based on the firmware type",
+	"错误选择可能损坏固件甚至是 Breed": "Wrong choice can damage the firmware or brick your device",
+	"如果不清楚当前固件的类型，请选择 \\[Breed 内部\\]。": "If you are unsure, choose [Breed internal]",
+	"请仅在十分熟悉固件结构、十分有把握的情况下，使用自定义位置。": "Only choose [Custom] if you are expert",
+	"单击 \\[重启\\] 按钮以重启路由": "Click [Reboot] to reboot the router",
+	"单击按钮备份相应的数据": "Click the corresponding button for backup",
+	"路由正在重启，请耐心等待。": "Router rebooting, please wait.",
+	"路由正在重启": "Router rebooting",
+	"本页面不会自动刷新，请自行检查是否重启成功。": "This page will not be refresh automatically, please check if reboot is successful.",
 	"恢复控制台"	: "Recovery Console",
 	"内存"		: "RAM",
 	"以太网"	: "Ethernet",
@@ -11,7 +21,7 @@ var dictionary = {
 	"错误选择可能损坏固件" : "The wrong choice could damage the firmware",
 	"设置当前刷入固件的类型" : "Set the current type of brush into the firmware",
 	"以便于在启动固件时设置特定的参数" : "In order to set specific parameters when starting the firmware",
-	"单击 [执行] 以恢复出厂设置" : "Click [Execute] to restore factory settings",
+	"单击 \\[执行\\] 以恢复出厂设置" : "Click [Execute] to restore factory settings",
 	"固件类型"	: "Firmware Type",
 	"固件更新"	: "Firmware Update",
 	"固件备份"	: "Firmware Backup",
@@ -20,30 +30,54 @@ var dictionary = {
 	"固件"		: "Firmware",
 	"闪存布局"	: "Flash Layout",
 	"自动重启"	: "Automatic Reboot",
-	"上传"		: "Submit",
+	"上传"		: "Upload",
 	"执行"		: "Execute",
 	"保存"		: "Save",
-	"编程器"	: "Compiler",
-	"公版"		: "Reference",
+	"编程器"	: "Programmer ",
+	"公版"		: "Generic",
 	"精简"		: "Compact",
 	"备份"		: "Backup",
-	"小米"		: "Wifi",
+	"小米"		: "Xiaomi",
 	"频率设置"	: "Frequency Setting",
 	"提示"		: "Attention",
-	"如果超频后无法开机": "If you can not boot after overclocking",
-	"请按住复位键再通电": "Press and hold the reset button, then power on",
-	"系统将以默认频率启动": "The system will start the default frequency",
-	"恢复出厂设置"	: "Reset",
+	"如果超频后无法开机": "If boot failed after overclocking",
+	"请按住复位键再通电": "press and hold the reset button, then power on",
+	"系统将以默认频率启动": "the system will start with default frequency",
+	"恢复出厂设置"	: "Factory Reset",
 	"地址修改"	: "Address Modification",
 	"修改"		: "Modify",
-	"独立参数"	: "Indepentend Participation Number",
-	"重启"		: "Restart",
+	"独立参数"	: "(Variables available to specific brand only)",
+	"重启"		: "Reboot",
 	"按钮以"	: " button to ",
 	"路由"		: " routing",
 	"单击"		: "Click",
 	"修订号"	: "Revision Number",
 	"关于"		: "About",
 	"联系作者"	: "Contact the autor",
+	"保留现有 "	: "Keep existing ",
+	"环境变量编辑": "Edit Environment Variables",
+	"环境变量设置": "Setting  Environment Variables",
+	" 频率": " Frequency",
+	"时序优化": "Clock Optimization",
+	"选择当前RAM容量值": "Choose RAM size",
+	"或者导致 EEPROM 丢失": " or corrupted EEPROM",
+	"请选择": "Please select",
+	"华硕": "ASUS",
+	"磊科": "Netcore",
+	"原厂": "Official",
+	"请首先启用环境变量再使用本功能": "Please enable enviromnent variables first",
+	"返回": "Back",
+	"控制": "Control",
+	"禁用": "Disable",
+	"启用": "Enable",
+	"位置": "Location",
+	"起始地址": "Start Address",
+	"大小": "Size",
+	"字节": "Bytes",
+	"设置": "Apply",
+	"自定义": "Custom",
+	"内部": "Internal",
+	"更新": "Update"
 }
 
 document.title = "Breed Web Recovery Console";
@@ -53,6 +87,10 @@ for (key in dictionary) {
 }
 
 var div_about		= document.getElementById("about");
+if(div_about)
+{
 var my_about		= document.createElement("div");
 my_about.innerHTML	= "<p>Breed Translator Extension for Chrome by szsoftware:</br><a href='https://github.com/szsoftware/breed-translator'>https://github.com/szsoftware/breed-translator</a></p>";
+my_about.innerHTML	+= "<p>Part of the Breed (e.g. WebGUI) is based on old version of <a href='https://github.com/pepe2k/u-boot_mod'>https://github.com/pepe2k/u-boot_mod</a> but sadly the auther does not follow GPL-v2 Licence and release the source code.</p>";
 div_about.appendChild(my_about);
+}
