@@ -52,7 +52,9 @@ for (key in dictionary) {
   document.body.innerHTML = document.body.innerHTML.replace(new RegExp(key, "g"), dictionary[key]);
 }
 
-var div_about		= document.getElementById("about");
-var my_about		= document.createElement("div");
-my_about.innerHTML	= "<p>Breed Translator Extension for Chrome by szsoftware:</br><a href='https://github.com/szsoftware/breed-translator'>https://github.com/szsoftware/breed-translator</a></p>";
-div_about.appendChild(my_about);
+var div_about = document.getElementById("about");
+if(div_about) {
+  var my_about = document.createElement("div");
+  my_about.innerHTML = "<p>Breed Translator Extension for Chrome by szsoftware:</br><a href='https://github.com/szsoftware/breed-translator'>https://github.com/szsoftware/breed-translator</a></p>";
+  div_about.appendChild(my_about);
+}
